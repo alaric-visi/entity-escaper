@@ -1,0 +1,4 @@
+/* Single stylesheet entry point; Vite inlines these imports at build time. */
+@import './tokens.css';
+@import './base.css';
+@import './components.css';

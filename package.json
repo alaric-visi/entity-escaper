@@ -1,0 +1,51 @@
+{
+  "name": "entity-escaper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Escape and unescape text for HTML, URLs, JavaScript, JSON, Base64 and XML, in the browser.",
+  "keywords": [
+    "html",
+    "entities",
+    "escape",
+    "unescape",
+    "url-encode",
+    "base64",
+    "json",
+    "xml",
+    "developer-tools"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "typecheck": "tsc -p jsconfig.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run format:check && npm run typecheck && npm test && npm run build",
+    "screenshots": "node scripts/screenshots.mjs"
+  },
+  "dependencies": {
+    "entities": "^9.0.0"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.65.1",
+    "eslint": "^10.15.0",
+    "globals": "^17.14.0",
+    "jsdom": "^31.0.1",
+    "prettier": "^3.10.1",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.8",
+    "vitest": "^5.1.1"
+  }
+}

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Escape and unescape text for HTML, URLs, JavaScript, JSON, Base64 and XML, with a live preview and highlighted changes. Runs entirely in your browser."
+    />
+    <meta name="color-scheme" content="light dark" />
+    <title>Entity Escaper</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <!-- Plain blocking script: applies a saved theme before first paint. -->
+    <script src="/theme-init.js"></script>
+    <link rel="stylesheet" href="/src/styles/index.css" />
+    <script type="module" src="/src/main.js"></script>
+  </head>
+  <body>
+    <main class="app">
+      <header class="app__header">
+        <div>
+          <h1 class="app__title">Entity Escaper</h1>
+          <p class="app__description">
+            Escape and unescape text for HTML, URLs, JavaScript, JSON, Base64 and XML.
+          </p>
+        </div>
+        <div class="app__header-actions">
+          <label class="toolbar__field">
+            <span class="toolbar__label">Theme</span>
+            <select id="theme-select" class="select select--small">
+              <option value="system">System</option>
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+            </select>
+          </label>
+          <button
+            id="shortcuts-trigger"
+            class="btn btn--ghost btn--small app__shortcuts"
+            type="button"
+            popovertarget="shortcuts"
+            aria-haspopup="dialog"
+          >
+            Keyboard shortcuts
+          </button>
+        </div>
+      </header>
+
+      <div class="toolbar">
+        <label class="toolbar__field">
+          <span class="toolbar__label">Format</span>
+          <select id="codec-select" class="select"></select>
+        </label>
+        <fieldset class="segmented">
+          <legend class="visually-hidden">Direction</legend>
+          <input type="radio" name="direction" id="direction-encode" value="encode" checked />
+          <label for="direction-encode" id="direction-encode-label">Escape</label>
+          <input type="radio" name="direction" id="direction-decode" value="decode" />
+          <label for="direction-decode" id="direction-decode-label">Unescape</label>
+        </fieldset>
+      </div>
+      <p class="guidance" id="codec-guidance"></p>
+
+      <details class="options-panel" id="options-panel">
+        <summary class="options-panel__summary">
+          <span class="options-panel__title" id="options-title">Options</span>
+          <span class="options-panel__current" id="options-current">Defaults</span>
+        </summary>
+        <div class="options-panel__body" id="codec-options"></div>
+      </details>
+
+      <div class="workspace">
+        <section class="panel panel--input" aria-labelledby="input-label">
+          <div class="panel__header">
+            <label class="panel__label" id="input-label" for="input">Text to escape</label>
+            <span class="panel__meta" id="input-count">0 characters</span>
+            <button id="open-file-btn" class="btn btn--ghost btn--small" type="button">
+              Open file…
+            </button>
+            <input
+              id="file-input"
+              type="file"
+              accept="text/*,.txt,.md,.html,.htm,.xml,.svg,.json,.js,.mjs,.ts,.css,.csv,.yml,.yaml,.b64"
+              hidden
+            />
+            <button id="clear-btn" class="btn btn--ghost btn--small" type="button" disabled>
+              Clear
+            </button>
+          </div>
+          <textarea
+            id="input"
+            class="panel__field"
+            placeholder="Paste your text here…"
+            spellcheck="false"
+            autocapitalize="off"
+            autocomplete="off"
+          ></textarea>
+          <p id="input-message" class="input-message" aria-live="polite"></p>
+
+          <!-- Always in the DOM so screen readers announce it when it appears. -->
+          <div class="notice-region" aria-live="polite">
+            <div id="encoded-notice" class="notice" hidden>
+              <p class="notice__text">
+                This text already contains <span id="notice-description">HTML entities</span>, such
+                as <span id="notice-examples"></span>.
+                <span id="notice-consequence">Escaping it again will double-escape them.</span>
+              </p>
+              <div class="notice__actions">
+                <button type="button" class="btn btn--secondary btn--small" data-action="decode">
+                  Unescape instead
+                </button>
+                <button type="button" class="btn btn--secondary btn--small" data-action="keep">
+                  Keep existing entities
+                </button>
+                <button type="button" class="btn btn--ghost btn--small" data-action="dismiss">
+                  Escape anyway
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <div class="swap-row">
+          <button
+            id="swap-btn"
+            class="btn btn--secondary btn--small"
+            type="button"
+            aria-keyshortcuts="Control+Shift+Enter Meta+Shift+Enter"
+          >
+            <span class="swap-icon swap-icon--stacked" aria-hidden="true">⇅</span>
+            <span class="swap-icon swap-icon--side" aria-hidden="true">⇄</span>
+            Swap
+          </button>
+        </div>
+
+        <section class="panel panel--output" aria-labelledby="output-label">
+          <div class="panel__header">
+            <label class="panel__label" id="output-label" for="output">Escaped output</label>
+            <span class="panel__meta" id="output-stats">0 characters</span>
+            <fieldset class="segmented segmented--small">
+              <legend class="visually-hidden">Show output as</legend>
+              <input type="radio" name="view" id="view-text" value="text" checked />
+              <label for="view-text">Text</label>
+              <input type="radio" name="view" id="view-changes" value="changes" />
+              <label for="view-changes" title="Highlight what changed">Changes</label>
+              <input type="radio" name="view" id="view-preview" value="preview" />
+              <label for="view-preview" id="view-preview-label" title="See it rendered in a page"
+                >Preview</label
+              >
+            </fieldset>
+          </div>
+          <textarea
+            id="output"
+            class="panel__field panel__field--output"
+            readonly
+            spellcheck="false"
+          ></textarea>
+          <div
+            id="output-changes"
+            class="panel__field panel__field--output changes"
+            role="region"
+            aria-label="Output with changes highlighted"
+            tabindex="0"
+            hidden
+          ></div>
+          <div id="output-preview" class="preview" hidden>
+            <iframe
+              id="preview-frame"
+              class="panel__field preview__frame"
+              sandbox=""
+              title="Preview of the output rendered as a web page"
+            ></iframe>
+            <p class="preview__caption">
+              How the output looks in a web page. Scripts and network requests are blocked.
+            </p>
+          </div>
+          <div id="output-problems" class="problems" aria-live="polite"></div>
+        </section>
+      </div>
+
+      <fieldset class="options">
+        <legend class="visually-hidden">General settings</legend>
+        <label class="checkbox">
+          <input type="checkbox" id="opt-auto-copy" />
+          Copy automatically after pasting
+        </label>
+        <label class="checkbox">
+          <input type="checkbox" id="opt-remember" checked />
+          Remember my text on this device
+        </label>
+      </fieldset>
+
+      <div class="actions">
+        <button id="download-btn" class="btn btn--secondary" type="button" disabled>
+          Download
+        </button>
+        <button
+          id="copy-btn"
+          class="btn btn--primary actions__primary"
+          type="button"
+          aria-keyshortcuts="Control+Enter Meta+Enter"
+          disabled
+        >
+          Copy to clipboard
+        </button>
+      </div>
+
+      <p id="status" class="visually-hidden" role="status" aria-live="polite"></p>
+
+      <div id="shortcuts" class="popover" popover role="dialog" aria-labelledby="shortcuts-title">
+        <h2 class="popover__title" id="shortcuts-title">Keyboard shortcuts</h2>
+        <dl class="shortcut-list">
+          <div>
+            <dt><kbd data-mod-key>Ctrl</kbd> + <kbd>Enter</kbd></dt>
+            <dd>Copy output</dd>
+          </div>
+          <div>
+            <dt><kbd data-mod-key>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd></dt>
+            <dd>Swap input and output</dd>
+          </div>
+        </dl>
+        <p class="popover__hint">
+          These work anywhere on the page. Use <kbd>Tab</kbd> to reach the other controls, and the
+          arrow keys inside a group. You can also drop a text file anywhere on the page.
+        </p>
+        <button
+          class="btn btn--secondary btn--small"
+          type="button"
+          popovertarget="shortcuts"
+          popovertargetaction="hide"
+        >
+          Close
+        </button>
+      </div>
+    </main>
+  </body>
+</html>

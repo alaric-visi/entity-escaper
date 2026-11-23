@@ -1,0 +1,81 @@
+/*
+ * Design tokens. Change colours, spacing and type here, not in components.
+ *
+ * Every colour is light-dark(LIGHT, DARK). Which one applies follows
+ * `color-scheme`: the system setting by default, or the Theme switch, which
+ * sets data-theme on <html>.
+ *
+ * Contrast (WCAG 2.x) is noted as light / dark, against the surface each
+ * colour sits on. Text is at least 4.5:1, borders that outline a control at
+ * least 3:1.
+ */
+:root {
+  color-scheme: light dark;
+
+  /* Surfaces */
+  --color-bg: light-dark(#f6f7f9, #1a1a1a);
+  --color-field: light-dark(#ffffff, #2d2d2d);
+  --color-field-readonly: light-dark(#f0f1f4, #252525);
+  --color-border: light-dark(#c9ccd3, #404040); /* decorative dividers only */
+  --color-field-border: light-dark(#80858f, #6b6b6b); /* 3.5:1 / 3.3:1 on bg */
+
+  /* Text */
+  --color-text: light-dark(#1d1f23, #e0e0e0); /* 15.4:1 / 13.2:1 on bg */
+  --color-text-muted: light-dark(#5b606b, #999999); /* 5.9:1 / 6.1:1 on bg */
+  --color-label: light-dark(#454a54, #aaaaaa); /* 8.3:1 / 7.5:1 on bg */
+  --color-placeholder: light-dark(#6b707b, #999999); /* 5.0:1 / 4.9:1 on field */
+
+  /* Accent and actions (white text on each meets AA 4.5:1) */
+  --color-focus: light-dark(#4c51bf, #8b9cf4); /* 6.5:1 / 5.4:1 against field */
+  --color-primary: #5a67d8; /* 4.8:1 with white */
+  --color-primary-hover: #4c51bf; /* 6.5:1 */
+  --color-success: #276749; /* 6.7:1 */
+  --color-danger: #c53030; /* 5.5:1 */
+  --color-on-primary: #ffffff;
+  --color-secondary: light-dark(#e4e6eb, #3a3a3a); /* text on it: 13.2:1 / 8.6:1 */
+  --color-secondary-hover: light-dark(#d6d9e0, #474747);
+  --color-ghost-border: light-dark(#80858f, #6b6b6b);
+
+  /* Highlighted changes */
+  --color-mark-bg: light-dark(rgb(90 103 216 / 0.16), rgb(139 156 244 / 0.3));
+  --color-mark-ring: light-dark(rgb(90 103 216 / 0.45), rgb(139 156 244 / 0.5));
+
+  /* Warning notice */
+  --color-warning-bg: light-dark(#fff6dc, #3b3118);
+  --color-warning-border: light-dark(#b7791f, #a8862f);
+  --color-warning-text: light-dark(#5f4100, #f3e3b5); /* 8.7:1 / 10.1:1 */
+
+  /* Error message */
+  --color-error-bg: light-dark(#fdecec, #3a1d1d);
+  --color-error-text: light-dark(#7f1d1d, #f5c2c2); /* 8.8:1 / 9.7:1 */
+
+  /* Elevation */
+  --shadow-popover: 0 12px 40px light-dark(rgb(0 0 0 / 0.18), rgb(0 0 0 / 0.5));
+  --color-backdrop: light-dark(rgb(0 0 0 / 0.2), rgb(0 0 0 / 0.4));
+
+  /* Type */
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-xl: 1.75rem;
+
+  /* Spacing and shape */
+  --space-1: 0.5rem;
+  --space-2: 0.75rem;
+  --space-3: 1.5rem;
+  --space-4: 1.875rem;
+  --radius: 8px;
+  --transition: 0.2s ease;
+}
+
+/* An explicit choice from the Theme switch overrides the system setting. */
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}

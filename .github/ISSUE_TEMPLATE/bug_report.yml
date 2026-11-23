@@ -1,0 +1,47 @@
+name: Bug report
+description: Something gives the wrong output or doesn't work
+labels: [bug]
+body:
+  - type: dropdown
+    id: format
+    attributes:
+      label: Format
+      options: [HTML, URL, JavaScript, JSON, Base64, XML, Not format-specific]
+    validations:
+      required: true
+  - type: dropdown
+    id: direction
+    attributes:
+      label: Direction
+      options: [Escape / Encode, Unescape / Decode, Not applicable]
+    validations:
+      required: true
+  - type: textarea
+    id: input
+    attributes:
+      label: Input
+      description: The smallest input that shows the problem. Please don't paste anything private.
+      render: text
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected output
+      render: text
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual output, or what went wrong
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: Options
+      description: Anything changed in the options panel (its summary line shows non-default settings).
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: e.g. Firefox 140 on macOS

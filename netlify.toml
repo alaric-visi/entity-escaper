@@ -1,0 +1,8 @@
+# Netlify deploy settings. Security and caching headers are written to
+# dist/_headers by the build (see vite.config.js), which Netlify reads.
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
